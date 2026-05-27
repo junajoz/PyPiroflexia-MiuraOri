@@ -46,6 +46,6 @@ python/files.zip
 
 ## Resumen de comparación
 
-- Archivos Python nuevos detectados: 15.
+- Archivos Python nuevos: 15.
 - Archivos Python del núcleo modificados: 3.
-- Archivos de salida detectados y excluidos: figuras PNG, GIFs y JSON de historial.
+- Archivos de salida excluidos: figuras PNG, GIFs y JSON de historial.
