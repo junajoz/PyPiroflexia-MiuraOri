@@ -1,0 +1,40 @@
+--- a/python/VisualFold.py
++++ b/python/VisualFold.py
+@@ -268,18 +268,24 @@
+     files = []
+     Node_history = []
+ 
+-    # Set up PyVista plotter with off_screen rendering set to False for interactive mode
+-    plotter = pv.Plotter(off_screen=False, window_size=(800, 600))
++    # Set up PyVista plotter with off_screen rendering (more reliable on non-GUI/limited OpenGL systems)
++    plotter = pv.Plotter(off_screen=True, window_size=(800, 600))
+     plotter.add_title("3D Truss Deformation")
+     plotter.show_axes()
+ 
+-    # Open a gif
++    # Set a stable camera orientation to avoid VTK view-up parallel warnings
++    plotter.set_viewup([0, 0, 1])
++    plotter.camera_position = 'xy'
++
++    # Open a gif (this creates the render window/context)
+     plotter.open_gif("ori.gif",
+         # loop=0,
+         # fps=10,
+         palettesize=256,
+         subrectangles=False        )
+ 
++    # Ensure a valid render context exists before writing frames
++    plotter.render()
+ 
+ 
+     mins = Node.min(axis=0)
+@@ -316,7 +322,8 @@
+         files.append(file)
+         Node_history.append(Nodew)
+ 
+-    plotter.show(auto_close=False)
++    # In off-screen mode we do not show an interactive window.
++    # plotter.show(auto_close=False)
+ 
+ 
+     # Show the plot once all frames are created

@@ -1,0 +1,20 @@
+--- a/python/PathAnalysis.py
++++ b/python/PathAnalysis.py
+@@ -5,7 +5,7 @@
+ from GetData import GetData
+ 
+ from GlobalK_fast_ver import GlobalK_fast_ver
+-from GlobalK_edu_ver2 import GlobalK_edu_ver2 
++#from GlobalK_edu_ver2 import GlobalK_edu_ver2
+ 
+ from scipy.io import loadmat
+ 
+@@ -91,7 +91,7 @@
+             R[np.isnan(R)] = 0
+             MRS = np.column_stack((F, R.T))
+ 
+-            MUL[FreeDofs, :] = solve(K[np.ix_(FreeDofs, FreeDofs)].A, MRS[FreeDofs, :])
++            MUL[FreeDofs, :] = solve(K[np.ix_(FreeDofs, FreeDofs)].toarray(), MRS[FreeDofs, :])
+             dUp = MUL[:, 0]
+             dUr = MUL[:, 1]
+             if itera == 1:

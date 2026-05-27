@@ -1,0 +1,32 @@
+--- a/python/Miura_Folding.py
++++ b/python/Miura_Folding.py
+@@ -52,7 +52,19 @@
+ 
+ # Call ConfigMiura to get Node and Panel arrays
+ Node, Panel, BDRY = ConfigMiura(sec_hor, sec_vert, theta, a, b, fdang)
+-# Node, Panel, _ = ConfigMiura(sec_hor, sec_vert, theta, a, b, fdang)
++
++# -----------------------------
++# Random nodal perturbation
++# -----------------------------
++seed = 42
++rng = np.random.default_rng(seed)
++
++perturb_scale = 0.005
++Node_pert = Node.copy()
++
++# Z_only perturbation: Add Gaussian noise to the z-coordinate of each node
++delta_z = rng.normal(loc=0.0, scale=perturb_scale, size=Node.shape[0])
++Node_pert[:, 2] += delta_z
+ 
+ # Define material constitutive and rotational spring functions
+ BarMater = lambda Ex: Ogden(Ex, E0)  # Define bar material constitutive
+@@ -76,7 +88,7 @@
+ 
+ # Perform analysis
+ 
+-truss, angles, F = PrepareData(Node, Panel, Supp, Load, BarMater, RotSpring, Kf, Kb, Abar)
++truss, angles, F = PrepareData(Node_pert, Panel, Supp, Load, BarMater, RotSpring, Kf, Kb, Abar)
+ truss['U0'] = np.zeros(3 * truss['Node'].shape[0])
+ 
+ U_his, LF_his, Data = PathAnalysis(truss, angles, F, blam, MaxIcr)
